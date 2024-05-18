@@ -10,14 +10,14 @@ import java.util.Map;
 
 public class Simulation implements CollisionHandler {
 
-    private final HashMap<Integer, ArrayList<MovableSpatialElement>> cells;
-    private final Map<Integer, List<ArrayList<MovableSpatialElement>>> surroundingCellsCache;
+    private final HashMap<Integer, List<MovableSpatialElement>> cells;
+    private final Map<Integer, List<List<MovableSpatialElement>>> surroundingCellsCache;
     private final int gridWidth;
     private final int gridHeight;
     private final int cellSize;
-    private final ArrayList<MovableSpatialElement> elements;
+    private final List<MovableSpatialElement> elements;
 
-    public Simulation(ArrayList<MovableSpatialElement> elements, int gridWidth, int gridHeight, int numOfCells) {
+    public Simulation(List<MovableSpatialElement> elements, int gridWidth, int gridHeight, int numOfCells) {
         this.elements = elements;
         this.gridWidth = gridWidth;
         this.gridHeight = gridHeight;
@@ -51,7 +51,7 @@ public class Simulation implements CollisionHandler {
 
     }
 
-    public ArrayList<MovableSpatialElement> getElements() {
+    public List<MovableSpatialElement> getElements() {
         return elements;
     }
 
@@ -59,14 +59,14 @@ public class Simulation implements CollisionHandler {
         this.elements.removeIf(p -> p.getId() == particle.getId());
     }
 
-    public List<ArrayList<MovableSpatialElement>> getSurroundingCells(int cellX, int cellY) {
+    public List<List<MovableSpatialElement>> getSurroundingCells(int cellX, int cellY) {
         int key = getKey(cellX * cellSize, cellY * cellSize);
         return surroundingCellsCache.get(key);
     }
 
     //TODO - This should be an array of size 8 not a List
-    private List<ArrayList<MovableSpatialElement>> computeSurroundingCells(int cellX, int cellY) {
-        List<ArrayList<MovableSpatialElement>> surroundingCells = new ArrayList<>();
+    private List<List<MovableSpatialElement>> computeSurroundingCells(int cellX, int cellY) {
+        List<List<MovableSpatialElement>> surroundingCells = new ArrayList<>();
 
         for (int dx = -1; dx <= 1; dx++) {
             for (int dy = -1; dy <= 1; dy++) {
