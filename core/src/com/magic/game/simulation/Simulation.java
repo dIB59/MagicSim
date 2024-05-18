@@ -10,24 +10,24 @@ import java.util.Map;
 
 public class Simulation implements CollisionHandler {
 
-    private final HashMap<Integer, ArrayList<MovableSpatialElement>> divisions;
+    private final HashMap<Integer, ArrayList<MovableSpatialElement>> cells;
     private final Map<Integer, List<ArrayList<MovableSpatialElement>>> surroundingCellsCache;
     private final int gridWidth;
     private final int gridHeight;
     private final int cellSize;
     private final ArrayList<MovableSpatialElement> elements;
 
-    public Simulation(Map<Integer, List<ArrayList<MovableSpatialElement>>> surroundingCellsCache, ArrayList<MovableSpatialElement> elements, int gridWidth, int gridHeight, int numOfCells) {
+    public Simulation(ArrayList<MovableSpatialElement> elements, int gridWidth, int gridHeight, int numOfCells) {
         this.elements = elements;
         this.gridWidth = gridWidth;
         this.gridHeight = gridHeight;
         this.cellSize = Math.max(1, gridWidth / numOfCells); // Ensure at least 1 cell per dimension
 
         // Initialize divisions with empty lists for each cell
-        divisions = new HashMap<>();
+        cells = new HashMap<>();
         for (int y = 0; y < gridHeight; y += cellSize) {
             for (int x = 0; x < gridWidth; x += cellSize) {
-                divisions.put(getKey(x, y), new ArrayList<>());
+                cells.put(getKey(x, y), new ArrayList<>());
             }
         }
 
@@ -35,7 +35,7 @@ public class Simulation implements CollisionHandler {
         for (MovableSpatialElement particle : elements) {
             int cellX = (int) (particle.getX() / cellSize);
             int cellY = (int) (particle.getY() / cellSize);
-            divisions.get(getKey(cellX * cellSize, cellY * cellSize)).add(particle);
+            cells.get(getKey(cellX * cellSize, cellY * cellSize)).add(particle);
         }
 
         this.surroundingCellsCache = new HashMap<>();
@@ -79,7 +79,7 @@ public class Simulation implements CollisionHandler {
                 // Check if neighbor cell is within grid bounds
                 if (neighborX >= 0 && neighborX < gridWidth / cellSize &&
                         neighborY >= 0 && neighborY < gridHeight / cellSize) {
-                    surroundingCells.add(this.divisions.get(this.getKey(neighborX * cellSize, neighborY * cellSize)));
+                    surroundingCells.add(this.cells.get(this.getKey(neighborX * cellSize, neighborY * cellSize)));
                 }
             }
         }
