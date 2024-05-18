@@ -5,17 +5,19 @@ import com.magic.game.physics.MovableSpatialElement;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 public class Simulation implements CollisionHandler {
 
     private final HashMap<Integer, ArrayList<MovableSpatialElement>> divisions;
+    private final Map<Integer, List<ArrayList<MovableSpatialElement>>> surroundingCellsCache;
     private final int gridWidth;
     private final int gridHeight;
     private final int cellSize;
     private final ArrayList<MovableSpatialElement> elements;
 
-    public Simulation(ArrayList<MovableSpatialElement> elements, int gridWidth, int gridHeight, int numOfCells) {
+    public Simulation(Map<Integer, List<ArrayList<MovableSpatialElement>>> surroundingCellsCache, ArrayList<MovableSpatialElement> elements, int gridWidth, int gridHeight, int numOfCells) {
         this.elements = elements;
         this.gridWidth = gridWidth;
         this.gridHeight = gridHeight;
@@ -35,9 +37,15 @@ public class Simulation implements CollisionHandler {
             int cellY = (int) (particle.getY() / cellSize);
             divisions.get(getKey(cellX * cellSize, cellY * cellSize)).add(particle);
         }
+
+        this.surroundingCellsCache = new HashMap<>();
+        for (int y = 0; y < gridHeight; y += cellSize) {
+            for (int x = 0; x < gridWidth; x += cellSize) {
+                int key = getKey(x, y);
+                this.surroundingCellsCache.put(key, computeSurroundingCells(x / cellSize, y / cellSize));
+            }
+        }
     }
-
-
 
     public void run() {
 
@@ -51,7 +59,12 @@ public class Simulation implements CollisionHandler {
         this.elements.removeIf(p-> p.getId() == particle.getId());
     }
 
-    private List<ArrayList<MovableSpatialElement>> getSurroundingCells(int cellX, int cellY) {
+    public List<ArrayList<MovableSpatialElement>> getSurroundingCells(int cellX, int cellY) {
+        int key = getKey(cellX * cellSize, cellY * cellSize);
+        return surroundingCellsCache.get(key);
+    }
+
+    private List<ArrayList<MovableSpatialElement>> computeSurroundingCells(int cellX, int cellY) {
         List<ArrayList<MovableSpatialElement>> surroundingCells = new ArrayList<>();
 
         for (int dx = -1; dx <= 1; dx++) {
