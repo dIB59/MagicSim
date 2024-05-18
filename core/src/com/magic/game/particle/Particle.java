@@ -82,10 +82,10 @@ public final class Particle implements MovableSpatialElement, Collidable<Spatial
         double overlap = combinedRadius - Math.sqrt(squaredDistance);
         double moveX = overlap * Math.cos(angle);
         double moveY = overlap * Math.sin(angle);
-        this.x -=  moveX / 2;
+        this.x -= moveX / 2;
         this.y -= moveY / 2;
         particle.setXCoordinate(particle.getVelocityY() + (moveX / 2));
-        particle.setYCoordinate(particle.getY() +  (moveY / 2));
+        particle.setYCoordinate(particle.getY() + (moveY / 2));
     }
 
     @Override
@@ -114,13 +114,13 @@ public final class Particle implements MovableSpatialElement, Collidable<Spatial
     }
 
     @Override
-    public void setDampner(double velocity) {
-        this.velocityDampener = velocity;
+    public double getDampner() {
+        return this.velocityDampener;
     }
 
     @Override
-    public double getDampner() {
-        return this.velocityDampener;
+    public void setDampner(double velocity) {
+        this.velocityDampener = velocity;
     }
 
     @Override

@@ -56,7 +56,7 @@ public class Simulation implements CollisionHandler {
     }
 
     public void removeElement(MovableSpatialElement particle) {
-        this.elements.removeIf(p-> p.getId() == particle.getId());
+        this.elements.removeIf(p -> p.getId() == particle.getId());
     }
 
     public List<ArrayList<MovableSpatialElement>> getSurroundingCells(int cellX, int cellY) {
