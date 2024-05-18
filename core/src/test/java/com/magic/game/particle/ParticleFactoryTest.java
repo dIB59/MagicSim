@@ -12,15 +12,10 @@ class ParticleFactoryTest {
      */
     @Test
     void testCreateMany() {
-        // Arrange
-        // TODO: Populate arranged inputs
         int numberOfParticles = 10;
 
-        // Act
         List<MovableSpatialElement> actualCreateManyResult = ParticleFactory.createMany(numberOfParticles);
 
-        // Assert
-        // TODO: Add assertions on result
         Assertions.assertEquals(numberOfParticles, actualCreateManyResult.size());
     }
 }
