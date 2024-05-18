@@ -64,6 +64,7 @@ public class Simulation implements CollisionHandler {
         return surroundingCellsCache.get(key);
     }
 
+    //TODO - This should be an array of size 8 not a List
     private List<ArrayList<MovableSpatialElement>> computeSurroundingCells(int cellX, int cellY) {
         List<ArrayList<MovableSpatialElement>> surroundingCells = new ArrayList<>();
 
