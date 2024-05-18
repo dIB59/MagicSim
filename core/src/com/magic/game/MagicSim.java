@@ -8,18 +8,25 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.ScreenUtils;
+import com.magic.game.particle.ParticleFactory;
+import com.magic.game.physics.MovableSpatialElement;
+import com.magic.game.simulation.Simulation;
+
 
 public class MagicSim extends ApplicationAdapter {
+
     OrthographicCamera camera;
     SpriteBatch batch;
     Texture img;
     ShapeRenderer shapeRenderer;
+    Simulation simulation;
 
     @Override
     public void create() {
         camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         batch = new SpriteBatch();
         shapeRenderer = new ShapeRenderer();
+        simulation = new Simulation(ParticleFactory.createMany(1),Gdx.graphics.getWidth(), Gdx.graphics.getHeight() ,30, 1);
 
     }
 
@@ -29,13 +36,13 @@ public class MagicSim extends ApplicationAdapter {
 
         // Begin rendering using ShapeRenderer for drawing the circle
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-        shapeRenderer.setColor(Color.BLUE); // Set circle color to blue
+        simulation.run();
+//        shapeRenderer.setColor(BLUE); // Set circle color to blue
 
-        // Draw the circle with center coordinates (x, y) and radius
-        float circleX = Gdx.graphics.getWidth() / 2f; // Adjust x-coordinate as needed
-        float circleY = Gdx.graphics.getHeight() / 2f; // Adjust y-coordinate as needed
-        float radius = 50; // Adjust radius as needed
-        shapeRenderer.circle(circleX, circleY, radius);
+        for (MovableSpatialElement element: simulation.getElements()
+             ) {
+            shapeRenderer.circle(element.getX(), element.getY(), element.getBoundary());
+        }
 
         shapeRenderer.end(); // End ShapeRenderer drawing
     }
