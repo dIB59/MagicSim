@@ -3,13 +3,13 @@ package com.magic.game.particle;
 import com.badlogic.gdx.graphics.Color;
 
 public class ParticleBuilder {
-    private Color color = Color.WHITE;
-    private int mass = 1;
-    private int radius = 10;
-    private int velX = 0;
-    private int velY = 0;
-    private int x = 0;
-    private int y = 0;
+    private Color color;
+    private int mass;
+    private int radius;
+    private int velX;
+    private int velY;
+    private int x;
+    private int y;
 
     public ParticleBuilder setColor(Color color) {
         this.color = color;

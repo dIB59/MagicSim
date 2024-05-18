@@ -2,17 +2,15 @@ package com.magic.game.physics;
 
 public interface SpatialElement {
 
-    void resolveCollision(SpatialElement spatialElement);
-
     int getId();
 
-    double getX();
+    float getX();
 
-    void setXCoordinate(double xCoordinate);
+    void setXCoordinate(float xCoordinate);
 
-    double getY();
+    float getY();
 
-    void setYCoordinate(double yCoordinate);
+    void setYCoordinate(float yCoordinate);
 
     int getBoundary();
 

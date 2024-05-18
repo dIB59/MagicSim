@@ -1,6 +1,10 @@
 package com.magic.game.simulation;
 
+import com.magic.game.particle.Particle;
+import com.magic.game.particle.ParticleFactory;
 import com.magic.game.physics.MovableSpatialElement;
+import com.magic.game.physics.SpatialElement;
+import jdk.jshell.spi.ExecutionControl;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -15,13 +19,15 @@ public class Simulation implements CollisionHandler {
     private final int gridWidth;
     private final int gridHeight;
     private final int cellSize;
+    private final int dt;
     private final List<MovableSpatialElement> elements;
 
-    public Simulation(List<MovableSpatialElement> elements, int gridWidth, int gridHeight, int numOfCells) {
+    public Simulation(List<MovableSpatialElement> elements, int gridWidth, int gridHeight, int numOfCells, int timeStep) {
         this.elements = elements;
         this.gridWidth = gridWidth;
         this.gridHeight = gridHeight;
-        this.cellSize = Math.max(1, gridWidth / numOfCells); // Ensure at least 1 cell per dimension
+        this.dt = timeStep;
+        this.cellSize = Math.max(1, gridWidth / numOfCells);
 
         // Initialize divisions with empty lists for each cell
         cells = new HashMap<>();
@@ -48,7 +54,11 @@ public class Simulation implements CollisionHandler {
     }
 
     public void run() {
+//        List<MovableSpatialElement> some = ParticleFactory.createMany(5);
 
+        for (MovableSpatialElement element: elements) {
+            updatePosition(element);
+        }
     }
 
     public List<MovableSpatialElement> getElements() {
@@ -59,9 +69,17 @@ public class Simulation implements CollisionHandler {
         this.elements.removeIf(p -> p.getId() == particle.getId());
     }
 
-    public List<List<MovableSpatialElement>> getSurroundingCells(int cellX, int cellY) {
+    private List<List<MovableSpatialElement>> getSurroundingCells(int cellX, int cellY) {
         int key = getKey(cellX * cellSize, cellY * cellSize);
         return surroundingCellsCache.get(key);
+    }
+
+    private void updatePosition(MovableSpatialElement element) {
+        float newX = (float) (element.getX() + element.getVelocityX() * dt);
+        float newY = (float) (element.getY() + element.getVelocityY() * dt);
+
+        element.setXCoordinate(newX);
+        element.setYCoordinate(newY);
     }
 
     //TODO - This should be an array of size 8 not a List
@@ -85,6 +103,10 @@ public class Simulation implements CollisionHandler {
             }
         }
 
+//        @SuppressWarnings("unchecked")
+//        List<MovableSpatialElement>[] array = new List[surroundingCells.size()];
+//        array = surroundingCells.toArray(array);
+
         return surroundingCells;
     }
 
@@ -92,4 +114,8 @@ public class Simulation implements CollisionHandler {
         return y * gridWidth + x;
     }
 
+    @Override
+    public boolean isColliding(SpatialElement element, SpatialElement element2) {
+        throw new RuntimeException();
+    }
 }
