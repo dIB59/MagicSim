@@ -1,7 +1,5 @@
 package com.magic.game.simulation;
 
-import com.dongbat.jbump.Collision;
-import com.dongbat.jbump.CollisionFilter;
 import com.magic.game.physics.MovableSpatialElement;
 
 import java.util.ArrayList;
