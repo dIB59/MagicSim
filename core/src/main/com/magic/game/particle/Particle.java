@@ -2,7 +2,6 @@ package com.magic.game.particle;
 
 import com.badlogic.gdx.graphics.Color;
 import com.magic.game.physics.MovableSpatialElement;
-import com.magic.game.physics.SpatialElement;
 import com.magic.game.ui.Displayable;
 
 import java.util.concurrent.atomic.AtomicInteger;

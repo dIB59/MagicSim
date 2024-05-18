@@ -1,10 +1,7 @@
 package com.magic.game.simulation;
 
-import com.magic.game.particle.Particle;
-import com.magic.game.particle.ParticleFactory;
 import com.magic.game.physics.MovableSpatialElement;
 import com.magic.game.physics.SpatialElement;
-import jdk.jshell.spi.ExecutionControl;
 
 import java.util.ArrayList;
 import java.util.HashMap;
