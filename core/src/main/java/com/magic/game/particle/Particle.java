@@ -53,7 +53,7 @@ public final class Particle implements MovableSpatialElement, Displayable {
 
     @Override
     public int getId() {
-        return 0;
+        return this.id;
     }
 
     @Override
