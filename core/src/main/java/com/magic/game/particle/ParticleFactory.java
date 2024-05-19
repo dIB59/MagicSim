@@ -63,10 +63,10 @@ public class ParticleFactory {
     }
 
     private static int getRandomYPosition() {
-        return RANDOM.nextInt( 100, Gdx.graphics.getHeight() - 100);
+        return RANDOM.nextInt( 100, 800);
     }
     private static int getRandomXPosition() {
-        return RANDOM.nextInt( 100, Gdx.graphics.getWidth() - 100);
+        return RANDOM.nextInt( 100, 800);
     }
 
 }
