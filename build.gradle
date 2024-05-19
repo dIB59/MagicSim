@@ -65,6 +65,16 @@ subprojects {
     maven { url 'https://s01.oss.sonatype.org/content/repositories/snapshots/' }
     maven { url 'https://jitpack.io' }
   }
+
+  test {
+    workingDir = projectDir
+    useJUnitPlatform()
+  }
+
+  dependencies {
+    testImplementation 'org.junit.jupiter:junit-jupiter-engine:5.10.0'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.0'
+  }
 }
 
 eclipse.project.name = 'ParticleMagicSim' + '-parent'
