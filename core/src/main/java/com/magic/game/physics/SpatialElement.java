@@ -1,6 +1,10 @@
 package com.magic.game.physics;
 
+import com.badlogic.gdx.graphics.Color;
+
 public interface SpatialElement {
+
+    Color getColor();
 
     int getId();
 
