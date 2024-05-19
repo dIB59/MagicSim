@@ -3,7 +3,9 @@ package com.magic.game.particle;
 import com.magic.game.physics.MovableSpatialElement;
 import org.junit.jupiter.api.Test;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -19,13 +21,13 @@ class ParticleFactoryTest {
 
         assertEquals(numParticles, createdParticles.size(), "Number of created particles is incorrect");
 
-        boolean[] seenIds = new boolean[11];
+        Set<Integer> seenIds = new HashSet<>(10);
 
         for (MovableSpatialElement particle : createdParticles) {
             int id = particle.getId();
 
-            assertFalse(seenIds[id], "Duplicate ID found: " + id);
-            seenIds[id] = true;
+            assertFalse(seenIds.contains(id), "Duplicate ID found: " + id);
+            seenIds.add(id);
         }
     }
 
