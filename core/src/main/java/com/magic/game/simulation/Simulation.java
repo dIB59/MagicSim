@@ -2,6 +2,7 @@ package com.magic.game.simulation;
 
 import com.magic.game.physics.MovableSpatialElement;
 import com.magic.game.physics.SpatialElement;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -9,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 
 
+@Slf4j
 public class Simulation implements CollisionHandler {
 
     private final HashMap<Integer, List<MovableSpatialElement>> cells;
@@ -26,7 +28,6 @@ public class Simulation implements CollisionHandler {
         this.dt = timeStep;
         this.cellSize = Math.max(1, gridWidth / numOfCells);
 
-        // Initialize divisions with empty lists for each cell
         cells = new HashMap<>();
         for (int y = 0; y < gridHeight; y += cellSize) {
             for (int x = 0; x < gridWidth; x += cellSize) {
@@ -51,9 +52,9 @@ public class Simulation implements CollisionHandler {
     }
 
     public void run() {
-//        List<MovableSpatialElement> some = ParticleFactory.createMany(5);
 
         for (MovableSpatialElement element: elements) {
+            elements.stream().peek(e -> resolveCollision(e, element));
             updatePosition(element);
         }
     }
