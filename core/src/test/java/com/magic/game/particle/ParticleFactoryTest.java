@@ -1,14 +1,9 @@
 package com.magic.game.particle;
 
-import com.badlogic.gdx.graphics.Color;
 import com.magic.game.physics.MovableSpatialElement;
-
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
-import com.magic.game.physics.SpatialElement;
 import org.junit.jupiter.api.Test;
+
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -60,7 +55,7 @@ class ParticleFactoryTest {
 
     @Test
     void testCreateOne() {
-        
+
         Particle actualCreateOneResult = ParticleFactory.createOne();
         assertEquals(0.9d, actualCreateOneResult.getVelocityDampner());
     }
