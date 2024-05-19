@@ -16,10 +16,10 @@ public class Simulation implements CollisionHandler {
     private final int gridWidth;
     private final int gridHeight;
     private final int cellSize;
-    private final int dt;
+    private final float dt;
     private final List<MovableSpatialElement> elements;
 
-    public Simulation(List<MovableSpatialElement> elements, int gridWidth, int gridHeight, int numOfCells, int timeStep) {
+    public Simulation(List<MovableSpatialElement> elements, int gridWidth, int gridHeight, int numOfCells, float timeStep) {
         this.elements = elements;
         this.gridWidth = gridWidth;
         this.gridHeight = gridHeight;

@@ -1,5 +1,6 @@
 package com.magic.game.particle;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.magic.game.physics.MovableSpatialElement;
 
@@ -28,8 +29,8 @@ public class ParticleFactory {
         int randomRadius = getRandomRadius();
         int randomVelX = getRandomVelocity();
         int randomVelY = getRandomVelocity();
-        int randomX = getRandomPosition();
-        int randomY = getRandomPosition();
+        int randomX = getRandomXPosition();
+        int randomY = getRandomYPosition();
 
         builder.setColor(randomColor)
                 .setMass(randomMass)
@@ -61,8 +62,11 @@ public class ParticleFactory {
         return RANDOM.nextInt(11) - 5;
     }
 
-    private static int getRandomPosition() {
-        return RANDOM.nextInt(800);
+    private static int getRandomYPosition() {
+        return RANDOM.nextInt( 100, 800);
+    }
+    private static int getRandomXPosition() {
+        return RANDOM.nextInt( 100, 800);
     }
 
 }
