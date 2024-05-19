@@ -53,7 +53,7 @@ public final class Particle implements MovableSpatialElement, Displayable {
 
     @Override
     public int getId() {
-        return 0;
+        return this.id;
     }
 
     @Override
@@ -101,4 +101,18 @@ public final class Particle implements MovableSpatialElement, Displayable {
         return this.color;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Particle particle = (Particle) o;
+
+        return id == particle.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return id;
+    }
 }
