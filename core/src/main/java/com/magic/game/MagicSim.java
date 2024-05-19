@@ -14,15 +14,12 @@ import com.magic.game.simulation.Simulation;
 
 public class MagicSim extends ApplicationAdapter {
 
-    OrthographicCamera camera;
     SpriteBatch batch;
-    Texture img;
     ShapeRenderer shapeRenderer;
     Simulation simulation;
 
     @Override
     public void create() {
-        camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         batch = new SpriteBatch();
         shapeRenderer = new ShapeRenderer();
         simulation = new Simulation(ParticleFactory.createMany(1),Gdx.graphics.getWidth(), Gdx.graphics.getHeight() ,30, 1);
@@ -48,7 +45,9 @@ public class MagicSim extends ApplicationAdapter {
 
     @Override
     public void dispose() {
+
         batch.dispose();
-        img.dispose();
+        shapeRenderer.dispose();
+
     }
 }
