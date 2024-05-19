@@ -58,7 +58,7 @@ public class ParticleFactory {
     }
 
     private static int getRandomVelocity() {
-        return RANDOM.nextInt(11) - 5;
+        return RANDOM.nextInt(-11, 11);
     }
 
     private static int getRandomYPosition() {
