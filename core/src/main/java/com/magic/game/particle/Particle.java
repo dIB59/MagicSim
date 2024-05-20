@@ -2,11 +2,12 @@ package com.magic.game.particle;
 
 import com.badlogic.gdx.graphics.Color;
 import com.magic.game.physics.MovableSpatialElement;
-import com.magic.game.ui.Displayable;
+import lombok.ToString;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
-public final class Particle implements MovableSpatialElement, Displayable {
+@ToString
+public final class Particle implements MovableSpatialElement {
 
     private static final AtomicInteger nextId = new AtomicInteger(0);
     private final int id;
@@ -37,7 +38,7 @@ public final class Particle implements MovableSpatialElement, Displayable {
     }
 
     @Override
-    public void setXCoordinate(float x) {
+    public void setX(float x) {
         this.x = (int) x;
     }
 
@@ -47,7 +48,7 @@ public final class Particle implements MovableSpatialElement, Displayable {
     }
 
     @Override
-    public void setYCoordinate(float y) {
+    public void setY(float y) {
         this.y = (int) y;
     }
 
@@ -77,22 +78,22 @@ public final class Particle implements MovableSpatialElement, Displayable {
     }
 
     @Override
-    public double getVelocityX() {
+    public double getXVel() {
         return this.velX;
     }
 
     @Override
-    public void setVelocityX(double velocity) {
+    public void setXVel(double velocity) {
         this.velX = velocity;
     }
 
     @Override
-    public double getVelocityY() {
+    public double getYVel() {
         return this.velY;
     }
 
     @Override
-    public void setVelocityY(double velocity) {
+    public void setYVel(double velocity) {
         this.velY = velocity;
 
     }
