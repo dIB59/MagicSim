@@ -3,9 +3,7 @@ package com.magic.game.simulation;
 import com.magic.game.physics.MovableSpatialElement;
 import com.magic.game.physics.SpatialElement;
 import lombok.Getter;
-import lombok.extern.slf4j.Slf4j;
 
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -16,26 +14,42 @@ public class Simulation implements CollisionHandler {
     @Getter
     private final List<MovableSpatialElement> elements;
 
-    public Simulation(List<MovableSpatialElement> elements, float timeStep) {
-
-        this.grid = new Grid(1000, 1000, 10);
-        this.elements = elements;
-        this.dt = timeStep;
-    }
-
     public Simulation(List<MovableSpatialElement> elements, float timeStep, Grid grid) {
+        float dt1;
 
-        this.grid = new Grid(1000, 1000, 10);
+        this.grid = grid;
         this.elements = elements;
-        this.dt = timeStep;
+        dt1 = timeStep;
+        if (dt1 == 0) dt1 += 0.5f;
+        this.dt = dt1;
+
     }
 
+    //TODO: Write a test that shows particles are moving
     public void run() {
 
         for (MovableSpatialElement element: elements) {
-//            elements.stream().peek(e -> resolveCollision(e, element));
-            System.out.println(element.getId());
             updatePosition(element);
+            if (element.getY() <= 0)  {
+//                System.out.println("Collision Y down");
+                element.setYVel(element.getYVel() * (-0.99));
+            }
+            if (element.getY() >= grid.getHeight())  {
+//                System.out.println("Collision Y up");
+                element.setYVel(element.getYVel() * (-0.99));
+            }
+            if (element.getX() >= grid.getWidth())  {
+//                System.out.println("Collision X right");
+                element.setXVel(element.getXVel() * (-0.99));
+            }
+            if (element.getX() <= 0)  {
+//                System.out.println("Collision X left");
+                element.setXVel(element.getXVel() * (-0.99));
+            }
+            for (MovableSpatialElement element2: elements) {
+                if (element.getId() == element2.getId()) continue;
+                resolveCollision(element, element2, 1);
+            }
         }
     }
 
@@ -43,50 +57,35 @@ public class Simulation implements CollisionHandler {
         this.elements.removeIf(p -> p.getId() == particle.getId());
     }
 
-//    private List<List<MovableSpatialElement>> getSurroundingCells(int cellX, int cellY) {
-//        int key = getKey(cellX * this.grid.getCellSize(), cellY * this.grid.getCellSize());
-//        return surroundingCellsCache.get(key);
-//    }
-
     private void updatePosition(MovableSpatialElement element) {
-        float newX = (float) (element.getX() + element.getVelocityX() * dt);
-        float newY = (float) (element.getY() + element.getVelocityY() * dt);
+        float newX = (float) (element.getX() + element.getXVel() * dt);
+        float newY = (float) (element.getY() + element.getYVel() * dt);
 
-        element.setXCoordinate(newX);
-        element.setYCoordinate(newY);
+        element.setX(newX);
+        element.setY(newY);
     }
 
-    //TODO - This should be an array of size 8 not a List
-//    private List<List<MovableSpatialElement>> computeSurroundingCells(int cellX, int cellY) {
-//        List<List<MovableSpatialElement>> surroundingCells = new ArrayList<>();
-//
-//        for (int dx = -1; dx <= 1; dx++) {
-//            for (int dy = -1; dy <= 1; dy++) {
-//                int neighborX = cellX + dx;
-//                int neighborY = cellY + dy;
-//
-//                if (dx == 0 && dy == 0) {
-//                    continue;
-//                }
-//
-//                // Check if neighbor cell is within grid bounds
-//                if (neighborX >= 0 && neighborX < gridWidth / cellSize &&
-//                        neighborY >= 0 && neighborY < gridHeight / cellSize) {
-//                    surroundingCells.add(this.cells.get(this.getKey(neighborX * cellSize, neighborY * cellSize)));
-//                }
-//            }
-//        }
-//
-//        @SuppressWarnings("unchecked")
-//        List<MovableSpatialElement>[] array = new List[surroundingCells.size()];
-//        array = surroundingCells.toArray(array);
-//
-//        return surroundingCells;
-//    }
 
-//    private int getKey(int x, int y) {
-//        return y * gridWidth + x;
-//    }
+    @Override
+    public void resolveCollision(MovableSpatialElement element, MovableSpatialElement particle, float timestep) {
+        if (Math.abs(element.getX() - particle.getX()) <= element.getBoundary() + particle.getBoundary() &&
+            Math.abs(element.getY() - particle.getY()) <= element.getBoundary() + particle.getBoundary()) {
+            double theta = Math.atan2(particle.getY() - element.getY(), particle.getX() - element.getX());
+            double thetaReflection = Math.PI - theta;
+
+            double tempXVel = element.getXVel();
+            double tempYVel = element.getYVel();
+            element.setXVel(Math.cos(thetaReflection) * tempXVel + Math.sin(thetaReflection) * particle.getXVel());
+            element.setYVel(Math.sin(thetaReflection) * tempXVel + Math.cos(thetaReflection) * particle.getYVel());
+            particle.setXVel(Math.cos(thetaReflection) * particle.getXVel() + Math.sin(thetaReflection) * tempXVel);
+            particle.setYVel(Math.sin(thetaReflection) * particle.getXVel() + Math.cos(thetaReflection) * tempYVel);
+
+            element.setX((float) (element.getX() + element.getXVel()) * timestep);
+            element.setY((float) (element.getY() + element.getYVel()) * timestep);
+            particle.setX((float) (particle.getX() + particle.getXVel()) * timestep);
+            particle.setY((float) (particle.getY() + particle.getYVel()) * timestep);
+        }
+    }
 
     @Override
     public boolean isColliding(SpatialElement element, SpatialElement element2) {
