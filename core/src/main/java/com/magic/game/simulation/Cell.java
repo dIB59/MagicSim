@@ -18,7 +18,7 @@ public class Cell {
     public Cell(int numOfCells, List<MovableSpatialElement> elements, Grid grid) {
         this.numberOfCells = numOfCells;
         this.elements = elements;
-        this.cellSize = Math.max(1, grid.getGridWidth() / numOfCells);
+        this.cellSize = Math.max(1, grid.getWidth() / numOfCells);
     }
 
 }

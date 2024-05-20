@@ -5,9 +5,9 @@ public interface MovableSpatialElement extends SpatialElement {
     double getVelocityDampner();
     void setVelocityDampner(double friction);
     double getMass();
-    double getVelocityX();
-    void setVelocityX(double velocity);
-    double getVelocityY();
-    void setVelocityY(double velocity);
+    double getXVel();
+    void setXVel(double velocity);
+    double getYVel();
+    void setYVel(double velocity);
 
 }

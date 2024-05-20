@@ -24,8 +24,8 @@ public class ParticleFactory {
         final ParticleBuilder builder = new ParticleBuilder();
 
         Color randomColor = getRandomColor();
-        int randomMass = getRandomMass();
-        int randomRadius = getRandomRadius();
+        int randomMass = getRandomUpto11();
+        int randomRadius = getRandomUpto11();
         int randomVelX = getRandomVelocity();
         int randomVelY = getRandomVelocity();
         int randomX = getRandomXPosition();
@@ -49,16 +49,12 @@ public class ParticleFactory {
         return new Color(r, g, b, 1);
     }
 
-    private static int getRandomMass() {
+    private static int getRandomUpto11() {
         return RANDOM.nextInt(10) + 1;
     }
 
-    private static int getRandomRadius() {
-        return RANDOM.nextInt(16) + 5;
-    }
-
     private static int getRandomVelocity() {
-        return RANDOM.nextInt(-11, 11);
+        return RANDOM.nextInt(-3, 3);
     }
 
     private static int getRandomYPosition() {

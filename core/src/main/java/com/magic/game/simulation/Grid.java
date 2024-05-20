@@ -7,16 +7,16 @@ import java.util.List;
 
 public class Grid {
     @Getter
-    private final int gridWidth;
+    private final int width;
     @Getter
-    private final int gridHeight;
+    private final int height;
     @Getter
     private final List<Cell> cells;
 //    private final Map<Integer, List<Cell>> surroundingCellsCache;
 
     public Grid(int gridWidth, int gridHeight, int numOfCells) {
-        this.gridWidth = gridWidth;
-        this.gridHeight = gridHeight;
+        this.width = gridWidth;
+        this.height = gridHeight;
         this.cells = new ArrayList<>();
 //        this.surroundingCellsCache = surroundingCellsCache;
     }

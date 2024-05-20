@@ -8,10 +8,8 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.magic.game.particle.ParticleFactory;
-import com.magic.game.physics.MovableSpatialElement;
 import com.magic.game.simulation.Grid;
 import com.magic.game.simulation.Simulation;
-
 
 public class MagicSim extends ApplicationAdapter {
 
@@ -27,12 +25,10 @@ public class MagicSim extends ApplicationAdapter {
         batch = new SpriteBatch();
         shapeRenderer = new ShapeRenderer();
         simulation = new Simulation(
-            ParticleFactory.createMany(10),
-            0.1f,
+            ParticleFactory.createMany(20),
+            Gdx.graphics.getDeltaTime(),
             new Grid(Gdx.graphics.getWidth(), Gdx.graphics.getHeight() ,10)
         );
-        System.out.println("LocalStorage Path:  " + Gdx.files.getLocalStoragePath());
-        System.out.println("Internal Path:  " +Gdx.files.internal(""));
         font = new BitmapFont(Gdx.files.absolute("C:/Users/ibrah/Documents/GitHub/PERSONAL/MagicSim/assets/font.fnt"));
         hudCamera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         hudCamera.position.set(hudCamera.viewportWidth / 2.0f, hudCamera.viewportHeight / 2.0f, 1.0f);
@@ -40,20 +36,18 @@ public class MagicSim extends ApplicationAdapter {
 
     @Override
     public void render() {
-//        ScreenUtils.clear(0.01f, 0.05f, 0.1f, 1);
         Gdx.gl.glClearColor(0.15f, 0.15f, 0.2f, 1f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        // Begin rendering using ShapeRenderer for drawing the circle
+
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         simulation.run();
-//        shapeRenderer.setColor(BLUE); // Set circle color to blue
 
-        for (MovableSpatialElement element: simulation.getElements()
-             ) {
-            shapeRenderer.circle(element.getX(), element.getY(), element.getBoundary());
-        }
+        simulation.getElements().stream()
+            .peek(element -> shapeRenderer.setColor(element.getColor()))
+            .forEach(element -> shapeRenderer.circle(element.getX(), element.getY(), element.getBoundary()));
 
-        shapeRenderer.end(); // End ShapeRenderer drawing
+
+        shapeRenderer.end();
 
         hudCamera.update();
         batch.setProjectionMatrix(hudCamera.combined);
@@ -64,7 +58,7 @@ public class MagicSim extends ApplicationAdapter {
 
     @Override
     public void dispose() {
-
+        font.dispose();
         batch.dispose();
         shapeRenderer.dispose();
 
