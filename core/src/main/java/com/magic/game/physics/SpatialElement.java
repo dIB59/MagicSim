@@ -10,11 +10,11 @@ public interface SpatialElement {
 
     float getX();
 
-    void setXCoordinate(float xCoordinate);
+    void setX(float xCoordinate);
 
     float getY();
 
-    void setYCoordinate(float yCoordinate);
+    void setY(float yCoordinate);
 
     int getBoundary();
 
