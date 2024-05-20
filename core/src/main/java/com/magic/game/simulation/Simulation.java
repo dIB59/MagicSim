@@ -68,27 +68,28 @@ public class Simulation implements CollisionHandler {
 
     @Override
     public void resolveCollision(MovableSpatialElement element, MovableSpatialElement particle, float timestep) {
-        if (Math.abs(element.getX() - particle.getX()) <= element.getBoundary() + particle.getBoundary() &&
-            Math.abs(element.getY() - particle.getY()) <= element.getBoundary() + particle.getBoundary()) {
-            double theta = Math.atan2(particle.getY() - element.getY(), particle.getX() - element.getX());
-            double thetaReflection = Math.PI - theta;
-
-            double tempXVel = element.getXVel();
-            double tempYVel = element.getYVel();
-            element.setXVel(Math.cos(thetaReflection) * tempXVel + Math.sin(thetaReflection) * particle.getXVel());
-            element.setYVel(Math.sin(thetaReflection) * tempXVel + Math.cos(thetaReflection) * particle.getYVel());
-            particle.setXVel(Math.cos(thetaReflection) * particle.getXVel() + Math.sin(thetaReflection) * tempXVel);
-            particle.setYVel(Math.sin(thetaReflection) * particle.getXVel() + Math.cos(thetaReflection) * tempYVel);
-
-            element.setX((float) (element.getX() + element.getXVel()) * timestep);
-            element.setY((float) (element.getY() + element.getYVel()) * timestep);
-            particle.setX((float) (particle.getX() + particle.getXVel()) * timestep);
-            particle.setY((float) (particle.getY() + particle.getYVel()) * timestep);
+        if (!isColliding(element, particle)) {
+            return;
         }
+        double theta = Math.atan2(particle.getY() - element.getY(), particle.getX() - element.getX());
+        double thetaReflection = Math.PI - theta;
+
+        double tempXVel = element.getXVel();
+        double tempYVel = element.getYVel();
+        element.setXVel(Math.cos(thetaReflection) * tempXVel + Math.sin(thetaReflection) * particle.getXVel());
+        element.setYVel(Math.sin(thetaReflection) * tempXVel + Math.cos(thetaReflection) * particle.getYVel());
+        particle.setXVel(Math.cos(thetaReflection) * particle.getXVel() + Math.sin(thetaReflection) * tempXVel);
+        particle.setYVel(Math.sin(thetaReflection) * particle.getXVel() + Math.cos(thetaReflection) * tempYVel);
+
+        element.setX((float) (element.getX() + element.getXVel()) * timestep);
+        element.setY((float) (element.getY() + element.getYVel()) * timestep);
+        particle.setX((float) (particle.getX() + particle.getXVel()) * timestep);
+        particle.setY((float) (particle.getY() + particle.getYVel()) * timestep);
     }
 
     @Override
-    public boolean isColliding(SpatialElement element, SpatialElement element2) {
-        throw new RuntimeException();
+    public boolean isColliding(SpatialElement element, SpatialElement particle) {
+        return Math.abs(element.getX() - particle.getX()) <= element.getBoundary() + particle.getBoundary() &&
+            Math.abs(element.getY() - particle.getY()) <= element.getBoundary() + particle.getBoundary();
     }
 }
