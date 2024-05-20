@@ -25,12 +25,10 @@ public class MagicSim extends ApplicationAdapter {
         batch = new SpriteBatch();
         shapeRenderer = new ShapeRenderer();
         simulation = new Simulation(
-            ParticleFactory.createMany(10),
-            0.1f,
+            ParticleFactory.createMany(20),
+            Gdx.graphics.getDeltaTime(),
             new Grid(Gdx.graphics.getWidth(), Gdx.graphics.getHeight() ,10)
         );
-        System.out.println("LocalStorage Path:  " + Gdx.files.getLocalStoragePath());
-        System.out.println("Internal Path:  " +Gdx.files.internal(""));
         font = new BitmapFont(Gdx.files.absolute("C:/Users/ibrah/Documents/GitHub/PERSONAL/MagicSim/assets/font.fnt"));
         hudCamera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         hudCamera.position.set(hudCamera.viewportWidth / 2.0f, hudCamera.viewportHeight / 2.0f, 1.0f);
