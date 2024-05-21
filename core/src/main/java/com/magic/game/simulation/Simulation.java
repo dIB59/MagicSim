@@ -28,23 +28,32 @@ public class Simulation implements CollisionHandler {
     //TODO: Write a test that shows particles are moving
     public void run() {
 
-        for (MovableSpatialElement element: elements) {
+        for (MovableSpatialElement element : elements) {
+            // Update the position first
             updatePosition(element);
-            if (element.getY() <= 0)  {
-                element.setYVel(element.getYVel() * (-0.99));
+
+            // Handle boundary collisions
+            if (element.getY() <= 0) {
+                element.setY(0); // Ensure it doesn't go below the lower boundary
+                element.setYVel(Math.abs(element.getYVel())+0.1); // Reflect velocity upwards
             }
-            if (element.getY() >= grid.getHeight())  {
-                element.setYVel(element.getYVel() * (-0.99));
+            if (element.getY() >= grid.getHeight()) {
+                element.setY(grid.getHeight()); // Ensure it doesn't go above the upper boundary
+                element.setYVel(-Math.abs(element.getYVel())-0.1); // Reflect velocity downwards
             }
-            if (element.getX() >= grid.getWidth())  {
-                element.setXVel(element.getXVel() * (-0.99));
+            if (element.getX() <= 0) {
+                element.setX(0); // Ensure it doesn't go beyond the left boundary
+                element.setXVel(Math.abs(element.getXVel())+0.1); // Reflect velocity to the right
             }
-            if (element.getX() <= 0)  {
-                element.setXVel(element.getXVel() * (-0.99));
+            if (element.getX() >= grid.getWidth()) {
+                element.setX(grid.getWidth()); // Ensure it doesn't go beyond the right boundary
+                element.setXVel(-Math.abs(element.getXVel())-0.1); // Reflect velocity to the left
             }
-            for (MovableSpatialElement element2: elements) {
+
+            // Handle collisions with other elements
+            for (MovableSpatialElement element2 : elements) {
                 if (element.getId() == element2.getId()) continue;
-                resolveCollision(element, element2, 1);
+                resolveCollision(element, element2, dt);
             }
         }
     }
