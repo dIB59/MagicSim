@@ -31,19 +31,15 @@ public class Simulation implements CollisionHandler {
         for (MovableSpatialElement element: elements) {
             updatePosition(element);
             if (element.getY() <= 0)  {
-//                System.out.println("Collision Y down");
                 element.setYVel(element.getYVel() * (-0.99));
             }
             if (element.getY() >= grid.getHeight())  {
-//                System.out.println("Collision Y up");
                 element.setYVel(element.getYVel() * (-0.99));
             }
             if (element.getX() >= grid.getWidth())  {
-//                System.out.println("Collision X right");
                 element.setXVel(element.getXVel() * (-0.99));
             }
             if (element.getX() <= 0)  {
-//                System.out.println("Collision X left");
                 element.setXVel(element.getXVel() * (-0.99));
             }
             for (MovableSpatialElement element2: elements) {
@@ -71,20 +67,40 @@ public class Simulation implements CollisionHandler {
         if (!isColliding(element, particle)) {
             return;
         }
-        double theta = Math.atan2(particle.getY() - element.getY(), particle.getX() - element.getX());
-        double thetaReflection = Math.PI - theta;
+        double deltaX = particle.getX() - element.getX();
+        double deltaY = particle.getY() - element.getY();
+        double distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+        double normalX = deltaX / distance;
+        double normalY = deltaY / distance;
 
-        double tempXVel = element.getXVel();
-        double tempYVel = element.getYVel();
-        element.setXVel(Math.cos(thetaReflection) * tempXVel + Math.sin(thetaReflection) * particle.getXVel());
-        element.setYVel(Math.sin(thetaReflection) * tempXVel + Math.cos(thetaReflection) * particle.getYVel());
-        particle.setXVel(Math.cos(thetaReflection) * particle.getXVel() + Math.sin(thetaReflection) * tempXVel);
-        particle.setYVel(Math.sin(thetaReflection) * particle.getXVel() + Math.cos(thetaReflection) * tempYVel);
+        double relativeVelX = particle.getXVel() - element.getXVel();
+        double relativeVelY = particle.getYVel() - element.getYVel();
 
-        element.setX((float) (element.getX() + element.getXVel()) * timestep);
-        element.setY((float) (element.getY() + element.getYVel()) * timestep);
-        particle.setX((float) (particle.getX() + particle.getXVel()) * timestep);
-        particle.setY((float) (particle.getY() + particle.getYVel()) * timestep);
+        double velocityAlongNormal = relativeVelX * normalX + relativeVelY * normalY;
+
+        if (velocityAlongNormal > 0) {
+            return;
+        }
+
+        // Calculate restitution coefficient (assuming perfectly elastic collision, e = 1)
+        double restitution = 1.0;
+
+        double impulse = -(1 + restitution) * velocityAlongNormal;
+        impulse /= (1 / element.getMass() + 1 / particle.getMass());
+
+        // Calculate impulse vector
+        double impulseX = impulse * normalX;
+        double impulseY = impulse * normalY;
+
+        element.setXVel((float) (element.getXVel() - (1 / element.getMass()) * impulseX));
+        element.setYVel((float) (element.getYVel() - (1 / element.getMass()) * impulseY));
+        particle.setXVel((float) (particle.getXVel() + (1 / particle.getMass()) * impulseX));
+        particle.setYVel((float) (particle.getYVel() + (1 / particle.getMass()) * impulseY));
+
+        element.setX((float) (element.getX() + element.getXVel() * timestep));
+        element.setY((float) (element.getY() + element.getYVel() * timestep));
+        particle.setX((float) (particle.getX() + particle.getXVel() * timestep));
+        particle.setY((float) (particle.getY() + particle.getYVel() * timestep));
     }
 
     @Override
