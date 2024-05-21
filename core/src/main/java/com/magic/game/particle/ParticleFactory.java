@@ -58,10 +58,10 @@ public class ParticleFactory {
     }
 
     private static int getRandomYPosition() {
-        return RANDOM.nextInt( 100, 800);
+        return RANDOM.nextInt( 300, 1200);
     }
     private static int getRandomXPosition() {
-        return RANDOM.nextInt( 100, 800);
+        return RANDOM.nextInt( 300, 1200);
     }
 
 }

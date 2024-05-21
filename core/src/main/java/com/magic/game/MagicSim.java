@@ -25,7 +25,7 @@ public class MagicSim extends ApplicationAdapter {
         batch = new SpriteBatch();
         shapeRenderer = new ShapeRenderer();
         simulation = new Simulation(
-            ParticleFactory.createMany(20),
+            ParticleFactory.createMany(100),
             Gdx.graphics.getDeltaTime(),
             new Grid(Gdx.graphics.getWidth(), Gdx.graphics.getHeight() ,10)
         );
