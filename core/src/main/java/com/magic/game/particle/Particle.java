@@ -9,7 +9,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 @ToString
 public final class Particle implements MovableSpatialElement {
 
-    private static final AtomicInteger nextId = new AtomicInteger(0);
+    private static final AtomicInteger NEXT_ID = new AtomicInteger(0);
     private final int id;
     private final Color color;
     private final int mass;
@@ -22,7 +22,7 @@ public final class Particle implements MovableSpatialElement {
 
 
     public Particle(Color color, int mass, int radius, int velX, int velY, int x, int y) {
-        this.id = nextId.incrementAndGet();
+        this.id = NEXT_ID.getAndIncrement();
         this.color = color;
         this.mass = mass;
         this.radius = radius;
