@@ -1,13 +1,15 @@
 package com.magic.game.physics;
 
+import jdk.incubator.vector.FloatVector;
+
 public interface MovableSpatialElement extends SpatialElement {
 
-    double getVelocityDampner();
-    void setVelocityDampner(double friction);
+    float getVelocityDampner();
+    void setVelocityDampner(float friction);
     double getMass();
-    double getXVel();
-    void setXVel(double velocity);
-    double getYVel();
-    void setYVel(double velocity);
+    void update();
+    FloatVector getVelocity();
+    FloatVector getAcceleration();
+
 
 }

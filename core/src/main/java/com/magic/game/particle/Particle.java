@@ -14,11 +14,10 @@ public final class Particle implements MovableSpatialElement {
     private final Color color;
     private final int mass;
     private final int radius;
-    private double velX;
-    private double velY;
-    private float x;
-    private float y;
-    private double velocityDampener = 0.9;
+    private FloatVector position;
+    private FloatVector velocity;
+    private FloatVector acceleration;
+    private float velocityDampener = 0.9F;
 
 
     public Particle(Color color, int mass, int radius, int velX, int velY, int x, int y) {
@@ -26,16 +25,9 @@ public final class Particle implements MovableSpatialElement {
         this.color = color;
         this.mass = mass;
         this.radius = radius;
-        this.velX = velX;
-        this.velY = velY;
-        this.x = x;
-        this.y = y;
-    }
-
-    @Override
-    public float getX() {
-        return this.x;
-    }
+        this.position = position;
+        this.velocity = velocity;
+        this.acceleration = FloatVector.zero(SPECIES);
 
     @Override
     public void setX(float x) {
@@ -55,6 +47,11 @@ public final class Particle implements MovableSpatialElement {
     @Override
     public int getId() {
         return this.id;
+    }
+
+    @Override
+    public FloatVector getPosition() {
+        return null;
     }
 
     @Override
@@ -78,28 +75,18 @@ public final class Particle implements MovableSpatialElement {
     }
 
     @Override
-    public double getXVel() {
-        return this.velX;
+    public void update() {
+
     }
 
     @Override
-    public void setXVel(double velocity) {
-        this.velX = velocity;
+    public FloatVector getVelocity() {
+        return this.velocity;
     }
 
     @Override
-    public double getYVel() {
-        return this.velY;
-    }
-
-    @Override
-    public void setYVel(double velocity) {
-        this.velY = velocity;
-
-    }
-
-    public Color getColor() {
-        return this.color;
+    public FloatVector getAcceleration() {
+        return this.acceleration;
     }
 
     @Override
